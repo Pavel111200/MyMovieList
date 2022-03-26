@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyMovieList.Infrastructure.Data;
 
@@ -11,9 +12,10 @@ using MyMovieList.Infrastructure.Data;
 namespace MyMovieList.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220326161734_EntitiesAdded")]
+    partial class EntitiesAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -387,27 +389,6 @@ namespace MyMovieList.Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TVShows");
-                });
-
-            modelBuilder.Entity("MyMovieList.Infrastructure.Data.UserSuggestion", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(210)
-                        .HasColumnType("nvarchar(210)");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasMaxLength(6)
-                        .HasColumnType("nvarchar(6)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserSuggestions");
                 });
 
             modelBuilder.Entity("MyMovieList.Infrastructure.Data.Writer", b =>
