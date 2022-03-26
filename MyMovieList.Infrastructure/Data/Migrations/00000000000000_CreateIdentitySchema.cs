@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 
-namespace MyMovieList.Data.Migrations
+namespace MyMovieList.Infrastructure.Data.Migrations
 {
     public partial class CreateIdentitySchema : Migration
     {
