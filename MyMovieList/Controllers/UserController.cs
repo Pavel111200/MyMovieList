@@ -12,5 +12,9 @@ namespace MyMovieList.Controllers
             this.roleManager = roleManager;
         }
 
+        public IActionResult Index()
+        {
+            return View();
+        }
     }
 }
