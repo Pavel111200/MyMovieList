@@ -23,8 +23,4 @@
     <ProjectReference Include="..\MyMovieList.Core\MyMovieList.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Areas\Admin\Views\" />
-  </ItemGroup>
-
 </Project>
