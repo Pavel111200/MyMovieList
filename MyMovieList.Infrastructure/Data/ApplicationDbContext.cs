@@ -12,10 +12,6 @@ namespace MyMovieList.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<UserRating>()
-                .Property<Guid>("MovieId")
-                .HasDefaultValue(new Guid("00000000-0000-0000-0000-000000000000"));
-
             base.OnModelCreating(modelBuilder);
         }
 
@@ -25,7 +21,8 @@ namespace MyMovieList.Infrastructure.Data
         public DbSet<TVShow> TVShows { get; set; }
         public DbSet<Genre> Genre { get; set; }
         public DbSet<UserSuggestion> UserSuggestions { get; set; }
-        public DbSet<UserRating> UserRatings { get; set; }
+        public DbSet<MovieRating> MovieRatings { get; set; }
+        public DbSet<TVShowRating> TVShowRatings { get; set; }
 
         //public DbSet<WriterMovie> WriterMovies { get; set; }
         //public DbSet<DirectorMovie> DirectorMovies { get; set; }

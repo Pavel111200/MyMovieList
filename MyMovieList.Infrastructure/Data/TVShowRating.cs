@@ -1,20 +1,16 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MyMovieList.Infrastructure.Data
 {
-    public class UserRating
+    public class TVShowRating
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
 
         [Required]
+        [Range(1, 10)]
         public double Rating { get; set; }
 
         [Required]
@@ -24,15 +20,9 @@ namespace MyMovieList.Infrastructure.Data
         public IdentityUser User { get; set; }
 
         [Required]
-        [ForeignKey(nameof(Movie))]
-        public Guid MovieId { get; set; }
-
-        public Movie Movie { get; set; }
-
-        [Required]
-        [ForeignKey(nameof(TvShow))]
+        [ForeignKey(nameof(TVShow))]
         public Guid TVShowId { get; set; }
 
-        public TVShow TvShow { get; set; }
+        public TVShow TVShow { get; set; }
     }
 }

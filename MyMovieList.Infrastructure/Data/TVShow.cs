@@ -29,7 +29,7 @@ namespace MyMovieList.Infrastructure.Data
         public int Season { get; set; }
 
         [Required]
-        public int Episode { get; set; }
+        public int NumberOfEpisodes { get; set; }
 
         public ICollection<Writer> Writer { get; set; } = new List<Writer>();
         public ICollection<Genre> Genre { get; set; } = new List<Genre>();
