@@ -20,6 +20,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IApplicationDbRepository,ApplicatioDbRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IMovieService, MovieService>();
 
 var app = builder.Build();
 

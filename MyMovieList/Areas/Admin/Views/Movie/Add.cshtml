@@ -1,0 +1,74 @@
+﻿@using MyMovieList.Core.Models
+@model AddMovieViewModel
+
+@{
+    ViewData["Title"] = "Add a Movie";
+}
+
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title">Add a Movie</h3>
+    </div>
+    <!-- /.card-header -->
+    <!-- form start -->
+    <form id="movie" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="card-body">
+            <div class="form-group">
+                <label asp-for="Title">Title</label>
+                <input asp-for="Title" class="form-control" id="InputTitle" placeholder="Enter Title">
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Runtime">Runtime</label>
+                <input asp-for="Runtime" type="time" class="form-control" id="InputRuntime" placeholder="Enter movie runtime">
+                <span asp-validation-for="Runtime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatedOn">Release date</label>
+                <input asp-for="CreatedOn" type="date" class="form-control" id="InputRuntime" placeholder="Enter release date">
+                <span asp-validation-for="CreatedOn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Writer">Writer (separated by comma and space)</label>
+                <textarea asp-for="Writer" class="form-control" rows="3" placeholder="Enter writer name"></textarea>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description">Description</label>
+                <textarea asp-for="Description" class="form-control" rows="3" placeholder="Write description here"></textarea>
+            </div>
+            <div class="form-group">
+                <label asp-for="Director">Director (separated by comma and space)</label>
+                <textarea asp-for="Director" class="form-control" rows="3" placeholder="Enter director name"></textarea>
+            </div>
+            <div class="form-group">
+                <label asp-for="Genre">Genre (separated by comma and space)</label>
+                <textarea asp-for="Genre" class="form-control" rows="3" placeholder="Enter genre"></textarea>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image" for="exampleInputFile">Image</label>
+                <div class="input-group">
+                    <div class="custom-file">
+                        <input asp-for="Image" type="file" class="custom-file-input" id="exampleInputFile">
+                        <label asp-for="Image" class="custom-file-label" for="exampleInputFile">Choose a file</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.card-body -->
+
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
+@section Scripts {
+<script src="~/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+<script>
+ $(function () {
+  bsCustomFileInput.init();
+ });
+</script>
+<partial name="_ValidationScriptsPartial" />
+}
+
