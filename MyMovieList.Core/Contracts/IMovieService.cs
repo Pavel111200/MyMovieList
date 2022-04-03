@@ -12,5 +12,7 @@ namespace MyMovieList.Core.Contracts
         Task<IEnumerable<GenreViewModel>> GetGenres();
 
         Task<bool> AddMovie(AddMovieViewModel model);
+
+        Task<IEnumerable<AllMoviesViewModel>> GetAllMovies();
     }
 }

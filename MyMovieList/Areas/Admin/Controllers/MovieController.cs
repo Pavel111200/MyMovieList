@@ -17,9 +17,11 @@ namespace MyMovieList.Areas.Admin.Controllers
             return View();
         }
 
-        public IActionResult AllMovies()
+        public async Task<IActionResult> AllMovies()
         {
-            return View("Succesfully added a movie!");
+            var model = await movieService.GetAllMovies();
+
+            return View(model);
         }
 
         [HttpGet]

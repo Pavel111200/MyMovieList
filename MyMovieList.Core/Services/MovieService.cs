@@ -92,11 +92,51 @@ namespace MyMovieList.Core.Services
             return isSaved;
         }
 
+        public async Task<IEnumerable<AllMoviesViewModel>> GetAllMovies()
+        {
+            var allMovies = await repo.All<Movie>()
+                .Select(movie => new AllMoviesViewModel()
+                {
+                    Id = movie.Id,
+                    Image = movie.Image,
+                    Title = movie.Title,
+                })
+                .ToListAsync();
+
+            foreach (var movie in allMovies)
+            {
+                movie.Rating = await GetRating(movie.Id);
+            }
+
+            return allMovies;
+        }
+
         public async Task<IEnumerable<GenreViewModel>> GetGenres()
         {
             return await repo.All<Genre>()
                 .Select(x => new GenreViewModel { Genre = x.Name })
                 .ToListAsync();
         }
+
+        private async Task<double> GetRating(Guid movieId)
+        {
+           List<double> allRatings = await repo.All<MovieRating>()
+                .Where(m=>movieId==m.MovieId)
+                .Select(x => x.Rating)
+                .ToListAsync();
+
+            if (allRatings.Count == 0)
+            {
+                return 1.00;
+            }
+
+            double sumOfRatings = 0.00;
+            foreach (var rating in allRatings)
+            {
+                sumOfRatings += rating;
+            }
+
+            return sumOfRatings/allRatings.Count;
+        } 
     }
 }
