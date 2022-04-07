@@ -24,6 +24,13 @@ namespace MyMovieList.Areas.Admin.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> Details(string id)
+        {
+            var movie = await movieService.GetMovieDetails(id);
+
+            return View(movie);
+        }
+
         [HttpGet]
         public IActionResult Add()
         {

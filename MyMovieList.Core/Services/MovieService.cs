@@ -105,7 +105,7 @@ namespace MyMovieList.Core.Services
 
             foreach (var movie in allMovies)
             {
-                movie.Rating = await GetRating(movie.Id);
+                movie.Rating = await GetRating(movie.Id.ToString());
             }
 
             return allMovies;
@@ -118,10 +118,32 @@ namespace MyMovieList.Core.Services
                 .ToListAsync();
         }
 
-        private async Task<double> GetRating(Guid movieId)
+        public async Task<MovieDetailsViewModel> GetMovieDetails(string id)
+        {
+            double rating = await GetRating(id);
+
+            return await repo.All<Movie>()
+                .Where(m => id == m.Id.ToString())
+                .Select(m => new MovieDetailsViewModel()
+                {
+                    Id = m.Id,
+                    CreatedOn = m.CreatedOn,
+                    Description = m.Description,
+                    Director = string.Join(", ",m.Director.Select(d=> $"{d.Firstname} {d.Lastname}")),
+                    Genre = string.Join(", ",m.Genre.Select(g=>g.Name)),
+                    Image = m.Image,
+                    Runtime = m.Runtime,
+                    Title = m.Title,
+                    Writer = string.Join(", ", m.Writer.Select(w => $"{w.Firstname} {w.Lastname}")),
+                    Rating = rating
+                })
+                .FirstAsync();
+        }
+
+        private async Task<double> GetRating(string movieId)
         {
            List<double> allRatings = await repo.All<MovieRating>()
-                .Where(m=>movieId==m.MovieId)
+                .Where(m=>movieId==m.MovieId.ToString())
                 .Select(x => x.Rating)
                 .ToListAsync();
 

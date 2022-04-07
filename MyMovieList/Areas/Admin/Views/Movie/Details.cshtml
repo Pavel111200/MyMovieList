@@ -1,0 +1,25 @@
+﻿@using MyMovieList.Core.Models
+@model MovieDetailsViewModel
+
+<div id="details-page" class="details">
+    <div class="book-information">
+        <h1 style="text-align:center">@Model.Title</h1>
+        <div class="img">
+            <img class="img-size"src="~/img/@Model.Image">
+        </div>
+        <div class="book-description">
+            <h3>Description:</h3>
+            <p>@Model.Description</p>
+        </div>
+        <div class="actions">
+            <a class="button" href=/admin/movie/edit/@Model.Id>Edit</a>
+        <div class="likes">
+            <i class="fas fa-star"></i>
+            <span id="total-likes">Rating : @Model.Rating/10</span>
+        </div>
+        </div>
+        <p class="type">Genre/s : @Model.Genre</p>
+        <p class="type">Writer/s : @Model.Writer</p>
+        <p class="type">Director/s : @Model.Director</p>
+    </div>
+</div>

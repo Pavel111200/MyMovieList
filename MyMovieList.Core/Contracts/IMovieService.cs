@@ -14,5 +14,7 @@ namespace MyMovieList.Core.Contracts
         Task<bool> AddMovie(AddMovieViewModel model);
 
         Task<IEnumerable<AllMoviesViewModel>> GetAllMovies();
+
+        Task<MovieDetailsViewModel> GetMovieDetails(string id);
     }
 }

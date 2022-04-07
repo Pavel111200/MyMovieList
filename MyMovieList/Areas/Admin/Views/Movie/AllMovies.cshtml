@@ -6,11 +6,11 @@
 @foreach (var movie in Model)
 {
     <div class="card" style="width: 18rem;margin-right: 5rem; margin-bottom: 3rem;">
-        <img style="height:415px; width: 288px" src="~/img/@movie.Image" class="card-img-top" alt="@movie.Image">
+        <img class="img-size" src="~/img/@movie.Image" class="card-img-top" alt="@movie.Image">
         <div class="card-body">
             <h5 class="card-title">@movie.Title</h5>
             <p class="card-text">Rating : @movie.Rating</p>
-            <a href="/admin/movie/datails/@movie.Id" class="btn btn-primary">Details</a>
+            <a asp-controller="Movie" asp-action="Details" asp-route-id="@movie.Id" asp-area="Admin" class="btn btn-primary">Details</a>
         </div>
     </div>
 }
