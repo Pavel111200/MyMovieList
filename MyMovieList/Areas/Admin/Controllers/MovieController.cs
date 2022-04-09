@@ -32,6 +32,31 @@ namespace MyMovieList.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Edit(string id)
+        {
+            var model = await movieService.GetMovieForEdit(id);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditMovieViewModel model)
+        {
+            bool isSaved = false;
+
+            if (ModelState.IsValid)
+            {
+                isSaved = await movieService.UpdateMovie(model);
+            }
+
+            if (isSaved)
+            {
+                return RedirectToAction(nameof(AllMovies));
+            }
+            return View(model);
+        }
+
+        [HttpGet]
         public IActionResult Add()
         {
             return View();

@@ -14,10 +14,12 @@ namespace MyMovieList.Core.Services
     public class MovieService : IMovieService
     {
         private readonly IApplicationDbRepository repo;
+        private readonly ApplicationDbContext context;
 
-        public MovieService(IApplicationDbRepository repo)
+        public MovieService(IApplicationDbRepository repo, ApplicationDbContext context)
         {
             this.repo = repo;
+            this.context = context;
         }
 
         public async Task<bool> AddMovie(AddMovieViewModel model)
@@ -27,16 +29,17 @@ namespace MyMovieList.Core.Services
             List<Writer> writers = new List<Writer>();
             List<Director> directors = new List<Director>();
 
-            if(repo.All<Movie>().Any(m=> model.Title == m.Title))
+            if (repo.All<Movie>().Any(m => model.Title == m.Title))
             {
                 return true;
             }
 
             foreach (var genre in model.Genre.Split(", "))
             {
-                if(await repo.All<Genre>().FirstOrDefaultAsync(g=> genre== g.Name) != null)
+                var genreToAdd = await repo.All<Genre>().FirstOrDefaultAsync(g => genre == g.Name);
+                if (genreToAdd != null)
                 {
-                    genres.Add(await repo.All<Genre>().FirstOrDefaultAsync(g => genre == g.Name));
+                    genres.Add(genreToAdd);
                 }
                 else
                 {
@@ -47,22 +50,30 @@ namespace MyMovieList.Core.Services
             {
                 string firstName = director.Split(" ")[0];
                 string lastName = director.Split(" ")[1];
-                if (repo.All<Director>().Where(d=> d.Firstname==firstName && d.Lastname==lastName) !=null)
+
+                var directorToAdd = await repo.All<Director>()
+                    .FirstOrDefaultAsync(d => d.Firstname == firstName && d.Lastname == lastName);
+
+                if (directorToAdd != null)
                 {
-                    directors.Add(await repo.All<Director>().Where(d => d.Firstname == firstName && d.Lastname == lastName).FirstAsync());
+                    directors.Add(directorToAdd);
                 }
                 else
                 {
-                    directors.Add(new Director { Firstname=firstName, Lastname=lastName});
+                    directors.Add(new Director { Firstname = firstName, Lastname = lastName });
                 }
             }
             foreach (var writer in model.Writer.Split(", "))
             {
                 string firstName = writer.Split(" ")[0];
                 string lastName = writer.Split(" ")[1];
-                if (repo.All<Writer>().Where(d => d.Firstname == firstName && d.Lastname == lastName) != null)
+
+                var writerToAdd = await repo.All<Writer>()
+                    .FirstOrDefaultAsync(w => w.Firstname == firstName && w.Lastname == lastName);
+
+                if (writerToAdd != null)
                 {
-                    writers.Add(await repo.All<Writer>().Where(d => d.Firstname == firstName && d.Lastname == lastName).FirstAsync());
+                    writers.Add(writerToAdd);
                 }
                 else
                 {
@@ -77,8 +88,8 @@ namespace MyMovieList.Core.Services
                 Genre = genres,
                 Director = directors,
                 Writer = writers,
-                Runtime=model.Runtime,
-                Image=model.Image
+                Runtime = model.Runtime,
+                Image = model.Image
             };
             try
             {
@@ -129,8 +140,8 @@ namespace MyMovieList.Core.Services
                     Id = m.Id,
                     CreatedOn = m.CreatedOn,
                     Description = m.Description,
-                    Director = string.Join(", ",m.Director.Select(d=> $"{d.Firstname} {d.Lastname}")),
-                    Genre = string.Join(", ",m.Genre.Select(g=>g.Name)),
+                    Director = string.Join(", ", m.Director.Select(d => $"{d.Firstname} {d.Lastname}")),
+                    Genre = string.Join(", ", m.Genre.Select(g => g.Name)),
                     Image = m.Image,
                     Runtime = m.Runtime,
                     Title = m.Title,
@@ -140,12 +151,113 @@ namespace MyMovieList.Core.Services
                 .FirstAsync();
         }
 
+        public async Task<EditMovieViewModel> GetMovieForEdit(string id)
+        {
+            return await repo.All<Movie>()
+                .Where(m => m.Id.ToString() == id)
+                .Select(m => new EditMovieViewModel()
+                {
+                    Id = m.Id,
+                    CreatedOn = m.CreatedOn,
+                    Description = m.Description,
+                    Director = string.Join(", ", m.Director.Select(d => $"{d.Firstname} {d.Lastname}")),
+                    Genre = string.Join(", ", m.Genre.Select(g => g.Name)),
+                    Image = m.Image,
+                    Runtime = m.Runtime,
+                    Title = m.Title,
+                    Writer = string.Join(", ", m.Writer.Select(w => $"{w.Firstname} {w.Lastname}")),
+                })
+                .FirstAsync();
+        }
+
+        public async Task<bool> UpdateMovie(EditMovieViewModel model)
+        {
+            bool isSaved = false;
+            List<Genre> genres = new List<Genre>();
+            List<Writer> writers = new List<Writer>();
+            List<Director> directors = new List<Director>();
+
+            foreach (var genre in model.Genre.Split(", "))
+            {
+                var genreToAdd = await repo.All<Genre>().FirstOrDefaultAsync(g => genre == g.Name);
+                if (genreToAdd != null)
+                {
+                    genres.Add(genreToAdd);
+                }
+                else
+                {
+                    genres.Add(new Genre { Name = genre });
+                }
+            }
+            foreach (var director in model.Director.Split(", "))
+            {
+                string firstName = director.Split(" ")[0];
+                string lastName = director.Split(" ")[1];
+
+                var directorToAdd = await repo.All<Director>()
+                    .FirstOrDefaultAsync(d => d.Firstname == firstName && d.Lastname == lastName);
+
+                if (directorToAdd != null)
+                {
+                    directors.Add(directorToAdd);
+                }
+                else
+                {
+                    directors.Add(new Director { Firstname = firstName, Lastname = lastName });
+                }
+            }
+            foreach (var writer in model.Writer.Split(", "))
+            {
+                string firstName = writer.Split(" ")[0];
+                string lastName = writer.Split(" ")[1];
+
+                var writerToAdd = await repo.All<Writer>()
+                    .FirstOrDefaultAsync(w => w.Firstname == firstName && w.Lastname == lastName);
+
+                if (writerToAdd != null)
+                {
+                    writers.Add(writerToAdd);
+                }
+                else
+                {
+                    writers.Add(new Writer { Firstname = firstName, Lastname = lastName });
+                }
+            }
+
+            var movieToUpdate = await context.Movies
+                .Include(m => m.Director)
+                .Include(m => m.Genre)
+                .Include(m => m.Writer)
+                .FirstOrDefaultAsync(m=> m.Id==model.Id);
+
+            if (movieToUpdate != null)
+            {
+                movieToUpdate.Director = directors;
+                movieToUpdate.Writer = writers;
+                movieToUpdate.Genre = genres;
+                movieToUpdate.Title = model.Title;
+                movieToUpdate.Description = model.Description;
+                movieToUpdate.CreatedOn = model.CreatedOn;
+                movieToUpdate.Image = model.Image;
+                movieToUpdate.Runtime = model.Runtime;
+            }
+            try
+            {
+                await repo.SaveChangesAsync();
+                isSaved = true;
+            }
+            catch (Exception)
+            {
+            }
+            return isSaved;
+        }
+
         private async Task<double> GetRating(string movieId)
         {
-           List<double> allRatings = await repo.All<MovieRating>()
-                .Where(m=>movieId==m.MovieId.ToString())
-                .Select(x => x.Rating)
-                .ToListAsync();
+            List<double> allRatings = await repo.All<MovieRating>()
+                 .Where(m => movieId == m.MovieId.ToString())
+                 .Select(x => x.Rating)
+                 .ToListAsync();
 
             if (allRatings.Count == 0)
             {
@@ -158,7 +270,7 @@ namespace MyMovieList.Core.Services
                 sumOfRatings += rating;
             }
 
-            return sumOfRatings/allRatings.Count;
-        } 
+            return sumOfRatings / allRatings.Count;
+        }
     }
 }
