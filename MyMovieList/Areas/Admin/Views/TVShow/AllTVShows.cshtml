@@ -1,0 +1,29 @@
+﻿@using MyMovieList.Core.Models
+@model IEnumerable<AllTVShowsViewModel>
+
+<h1 style="text-align:center">All TV shows</h1>
+<div class="row">
+    @if (Model != null)
+    {
+        @foreach (var show in Model)
+        {
+            <div class="card" style="width: 18rem;margin-right: 5rem; margin-bottom: 3rem;">
+                <img class="img-size" src="~/img/@show.Image" class="card-img-top" alt="@show.Image">
+                <div class="card-body">
+                    <h5 class="card-title" style="margin-right: 1rem;">@show.Title</h5>
+                    <div>
+                        <i class="fas fa-star"></i>
+                        <span id="total-likes">Rating : @show.Rating/10</span>
+                        <span id="total-likes">Season : @show.Season</span>
+                    </div>
+                    <a asp-controller="TVShow" asp-action="Details" asp-route-id="@show.Id" asp-area="Admin" class="btn btn-primary">Details</a>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p>There are no TV shows. Whould you like to add one?</p>
+        <a asp-controller="Movie" asp-action="Add" asp-area="Admin" class="btn btn-primary">Add a TV show</a>
+    }
+</div>
