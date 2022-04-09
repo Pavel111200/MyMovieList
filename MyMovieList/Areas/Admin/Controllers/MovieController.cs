@@ -20,7 +20,7 @@ namespace MyMovieList.Areas.Admin.Controllers
         public async Task<IActionResult> AllMovies()
         {
             var model = await movieService.GetAllMovies();
-
+            
             return View(model);
         }
 

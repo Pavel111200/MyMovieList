@@ -1,17 +1,28 @@
 ﻿@using MyMovieList.Core.Models
 @model IEnumerable<AllMoviesViewModel>
 
-<h3>All Movies</h3>
+<h1 style="text-align:center">All Movies</h1>
 <div class="row">
-@foreach (var movie in Model)
-{
-    <div class="card" style="width: 18rem;margin-right: 5rem; margin-bottom: 3rem;">
-        <img class="img-size" src="~/img/@movie.Image" class="card-img-top" alt="@movie.Image">
-        <div class="card-body">
-            <h5 class="card-title">@movie.Title</h5>
-            <p class="card-text">Rating : @movie.Rating</p>
-            <a asp-controller="Movie" asp-action="Details" asp-route-id="@movie.Id" asp-area="Admin" class="btn btn-primary">Details</a>
-        </div>
-    </div>
-}
+    @if (Model != null)
+    {
+        @foreach (var movie in Model)
+        {
+            <div class="card" style="width: 18rem;margin-right: 5rem; margin-bottom: 3rem;">
+                <img class="img-size" src="~/img/@movie.Image" class="card-img-top" alt="@movie.Image">
+                <div class="card-body">
+                    <h5 class="card-title">@movie.Title</h5>
+                    <div>
+                        <i class="fas fa-star"></i>
+                        <span id="total-likes">Rating : @movie.Rating/10</span>
+                    </div>
+                    <a asp-controller="Movie" asp-action="Details" asp-route-id="@movie.Id" asp-area="Admin" class="btn btn-primary">Details</a>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p>There are no movies. Whould you like to add one?</p>
+        <a asp-controller="Movie" asp-action="Add" asp-area="Admin" class="btn btn-primary">Add a movie</a>
+    }
 </div>
