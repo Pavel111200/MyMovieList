@@ -21,7 +21,7 @@ namespace MyMovieList.Core.Services
             List<Genre> genres = new List<Genre>();
             List<Writer> writers = new List<Writer>();
 
-            if (repo.All<TVShow>().Any(s => model.Title == s.Title))
+            if (repo.All<TVShow>().Any(s => model.Title == s.Title && model.Season==s.Season))
             {
                 return true;
             }
