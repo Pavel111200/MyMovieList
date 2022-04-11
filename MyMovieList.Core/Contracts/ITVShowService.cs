@@ -17,8 +17,8 @@ namespace MyMovieList.Core.Contracts
 
         Task<TVShowDetailsViewModel> GetTVShowDetails(string id);
 
-        //Task<bool> UpdateMovie(EditMovieViewModel model);
+        Task<bool> UpdateTVShow(EditTVShowViewModel model);
 
-        //Task<EditMovieViewModel> GetMovieForEdit(string id);
+        Task<EditTVShowViewModel> GetTVShowForEdit(string id);
     }
 }

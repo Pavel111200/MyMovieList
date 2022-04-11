@@ -48,5 +48,30 @@ namespace MyMovieList.Areas.Admin.Controllers
 
             return View(show);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(string id)
+        {
+            var model = await showService.GetTVShowForEdit(id);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditTVShowViewModel model)
+        {
+            bool isSaved = false;
+
+            if (ModelState.IsValid)
+            {
+                isSaved = await showService.UpdateTVShow(model);
+            }
+
+            if (isSaved)
+            {
+                return RedirectToAction(nameof(AllTVShows));
+            }
+            return View(model);
+        }
     }
 }
