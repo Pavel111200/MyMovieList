@@ -105,6 +105,27 @@ namespace MyMovieList.Core.Services
                 .ToListAsync();
         }
 
+        public async Task<TVShowDetailsViewModel> GetTVShowDetails(string id)
+        {
+            double rating = await GetRating(id);
+
+            return await repo.All<TVShow>()
+                .Where(s => id == s.Id.ToString())
+                .Select(s => new TVShowDetailsViewModel()
+                {
+                    Id = s.Id,
+                    Description = s.Description,
+                    Genre = string.Join(", ", s.Genre.Select(g => g.Name)),
+                    Image = s.Image,
+                    Title = s.Title,
+                    Writer = string.Join(", ", s.Writer.Select(w => $"{w.Firstname} {w.Lastname}")),
+                    Rating = rating,
+                    NumberOfEpisodes = s.NumberOfEpisodes,
+                    Season = s.Season
+                })
+                .FirstAsync();
+        }
+
         private async Task<double> GetRating(string showId)
         {
             List<double> allRatings = await repo.All<TVShowRating>()

@@ -30,7 +30,7 @@ namespace MyMovieList.Areas.Admin.Controllers
 
             if (isSaved)
             {
-                //return RedirectToAction(nameof(AllTVShows));
+                return RedirectToAction(nameof(AllTVShows));
             }
             return View(model);
         }
@@ -40,6 +40,13 @@ namespace MyMovieList.Areas.Admin.Controllers
             var model = await showService.GetAllTVShows();
 
             return View(model);
+        }
+
+        public async Task<IActionResult> Details(string id)
+        {
+            var show = await showService.GetTVShowDetails(id);
+
+            return View(show);
         }
     }
 }

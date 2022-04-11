@@ -14,12 +14,10 @@ namespace MyMovieList.Core.Services
     public class MovieService : IMovieService
     {
         private readonly IApplicationDbRepository repo;
-        private readonly ApplicationDbContext context;
 
-        public MovieService(IApplicationDbRepository repo, ApplicationDbContext context)
+        public MovieService(IApplicationDbRepository repo)
         {
             this.repo = repo;
-            this.context = context;
         }
 
         public async Task<bool> AddMovie(AddMovieViewModel model)
@@ -224,11 +222,11 @@ namespace MyMovieList.Core.Services
                 }
             }
 
-            var movieToUpdate = await context.Movies
+            var movieToUpdate = await repo.All<Movie>()
                 .Include(m => m.Director)
                 .Include(m => m.Genre)
                 .Include(m => m.Writer)
-                .FirstOrDefaultAsync(m=> m.Id==model.Id);
+                .FirstOrDefaultAsync(m => m.Id == model.Id);
 
             if (movieToUpdate != null)
             {
