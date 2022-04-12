@@ -21,58 +21,7 @@ body {
     margin: 30px;
 }
 
-.details > .book-information > .img {
-    width: 60%;
-    align-items: center;
-}
-
-.img {
-    width: 15rem;
-    position: relative;
-    overflow: hidden;
-    padding: 0rem;
-}
-
 .img-size {
     height:415px;
     width: 288px;
-}
-
-div.actions {
-    display: flex;
-    justify-content: center;
-}
-
-    div.actions a {
-        margin-right: 10px;
-        height: 25px;
-    }
-
-.likes {
-    font-size: 20px;
-    text-shadow: 4px 4px 8px blue;
-    text-align: center;
-}
-
-.book-description {
-    width: 30rem;
-    padding: 2rem;
-    overflow: auto;
-    text-align: justify;
-}
-
-.button {
-    display: inline-block;
-    padding: 0.3rem 1rem;
-    border-radius: 1rem;
-    text-decoration: none;
-    font-weight: bold;
-    background: lightcoral;
-    color: rgb(255, 255, 255);
-    border: none;
-    font-size: 1rem;
-    cursor: pointer;
-    text-align: center;
-    margin-bottom: 10px;
-    margin: 5px;
 }

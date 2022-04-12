@@ -3,11 +3,6 @@ using MyMovieList.Core.Contracts;
 using MyMovieList.Core.Models;
 using MyMovieList.Infrastructure.Data;
 using MyMovieList.Infrastructure.Data.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MyMovieList.Core.Services
 {
@@ -166,6 +161,25 @@ namespace MyMovieList.Core.Services
                     Writer = string.Join(", ", m.Writer.Select(w => $"{w.Firstname} {w.Lastname}")),
                 })
                 .FirstAsync();
+        }
+
+        public async Task<IEnumerable<AllMoviesViewModel>> GetTopThree()
+        {
+            var allMovies = await repo.All<Movie>()
+                .Select(movie => new AllMoviesViewModel()
+                {
+                    Id = movie.Id,
+                    Image = movie.Image,
+                    Title = movie.Title,
+                })
+                .ToListAsync();
+
+            foreach (var movie in allMovies)
+            {
+                movie.Rating = await GetRating(movie.Id.ToString());
+            }
+
+            return allMovies.OrderBy(m=>m.Rating).Take(3).ToList();
         }
 
         public async Task<bool> UpdateMovie(EditMovieViewModel model)
