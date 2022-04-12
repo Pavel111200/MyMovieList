@@ -144,6 +144,38 @@ namespace MyMovieList.Core.Services
                 .FirstAsync();
         }
 
+        public async Task<bool> RateShow(string userId, Guid showId, double rating)
+        {
+            bool isSaved = false;
+            var showRating = await repo.All<TVShowRating>()
+                .FirstOrDefaultAsync(sr => sr.UserId == userId && sr.TVShowId == showId);
+
+            if (showRating != null)
+            {
+                showRating.Rating = rating;
+                await repo.SaveChangesAsync();
+                return true;
+            }
+
+            TVShowRating newShowRating = new TVShowRating()
+            {
+                UserId = userId,
+                TVShowId = showId,
+                Rating = rating,
+            };
+            try
+            {
+                await repo.AddAsync<TVShowRating>(newShowRating);
+                await repo.SaveChangesAsync();
+                isSaved = true;
+            }
+            catch (Exception)
+            {
+            }
+
+            return isSaved;
+        }
+
         public async Task<bool> UpdateTVShow(EditTVShowViewModel model)
         {
             bool isSaved = false;

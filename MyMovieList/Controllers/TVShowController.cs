@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyMovieList.Core.Contracts;
+using MyMovieList.Core.Models;
 
 namespace MyMovieList.Controllers
 {
@@ -18,6 +19,31 @@ namespace MyMovieList.Controllers
             var model = await showService.GetAllTVShows();
 
             return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(string id)
+        {
+            var movie = await showService.GetTVShowDetails(id);
+
+            return View(movie);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Details(TVShowDetailsViewModel model)
+        {
+            bool isSaved = false;
+
+            string userId = await userService.GetUserId(User.Identity.Name);
+
+            isSaved = await showService.RateShow(userId, model.Id, model.Rating);
+
+            return RedirectToAction(nameof(LikedShows));
+        }
+
+        public async Task<IActionResult> LikedShows()
+        {
+            return View();
         }
     }
 }

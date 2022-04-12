@@ -20,5 +20,7 @@ namespace MyMovieList.Core.Contracts
         Task<bool> UpdateTVShow(EditTVShowViewModel model);
 
         Task<EditTVShowViewModel> GetTVShowForEdit(string id);
+
+        Task<bool> RateShow(string userId, Guid showId, double rating);
     }
 }
