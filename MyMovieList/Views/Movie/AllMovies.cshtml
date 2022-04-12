@@ -1,14 +1,13 @@
 ﻿@using MyMovieList.Core.Models
 @model IList<AllMoviesViewModel>
 @{
-    ViewData["Title"] = "Home";
+    ViewData["Title"] = "All movies";
 }
 
 <section id="dashboard-page" class="dashboard">
-    <h1>Welcome to My Movie List</h1>
+    <h1>All Movies</h1>
     @if (Model != null)
     {
-        <h2 style="text-align : center;">Top 3</h2>
         <ul class="other-books-list">
             @foreach (var movie in Model)
             {
