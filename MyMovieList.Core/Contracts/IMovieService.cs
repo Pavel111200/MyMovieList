@@ -24,5 +24,7 @@ namespace MyMovieList.Core.Contracts
         Task<IEnumerable<AllMoviesViewModel>> GetTopThree();
 
         Task<bool> RateMovie(string userId, Guid movieId, double rating);
+
+        Task<IEnumerable<LikedMoviesViewModel>> GetLikedMovies(string userId);
     }
 }

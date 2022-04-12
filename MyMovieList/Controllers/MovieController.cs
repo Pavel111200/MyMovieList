@@ -44,7 +44,11 @@ namespace MyMovieList.Controllers
 
         public async Task<IActionResult> LikedMovies()
         {
-            return View();
+            string userId = await userService.GetUserId(User.Identity.Name);
+            var model = await movieService.GetLikedMovies(userId);
+
+            return View(model);
         }
+
     }
 }

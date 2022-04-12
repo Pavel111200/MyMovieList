@@ -123,6 +123,28 @@ namespace MyMovieList.Core.Services
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<LikedMoviesViewModel>> GetLikedMovies(string userId)
+        {
+            var likedMovies = await repo.All<MovieRating>()
+                .Where(mr => mr.UserId == userId)
+                .Select(mr => new LikedMoviesViewModel
+                {
+                    Id = mr.Movie.Id,
+                    Image = mr.Movie.Image,
+                    Title = mr.Movie.Title,
+                    YourRating = mr.Rating,
+                })
+                .ToListAsync();
+
+            foreach (var movie in likedMovies)
+            {
+                movie.OverallRating = await GetRating(movie.Id.ToString());
+                movie.OverallRating = Math.Round(movie.OverallRating, 1);
+            }
+
+            return likedMovies;
+        }
+
         public async Task<MovieDetailsViewModel> GetMovieDetails(string id)
         {
             double rating = await GetRating(id);
