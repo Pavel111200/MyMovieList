@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using MyMovieList.Core.Contracts;
 using MyMovieList.Core.Models;
+using MyMovieList.Infrastructure.Data;
 using MyMovieList.Infrastructure.Data.Repositories;
 using System;
 using System.Collections.Generic;
@@ -70,6 +71,28 @@ namespace MyMovieList.Core.Services
             }
 
             return result;
+        }
+
+        public async Task<bool> Suggestion(UserSuggestionViewModel model)
+        {
+            bool isSaved = false;
+            UserSuggestion userSuggestion = new UserSuggestion
+            {
+                Title= model.Title,
+                Type = model.Type,
+            };
+
+            try
+            {
+                await repo.AddAsync<UserSuggestion>(userSuggestion);
+                await repo.SaveChangesAsync();
+                isSaved = true;
+            }
+            catch (Exception)
+            {
+            }
+
+            return isSaved;
         }
     }
 }

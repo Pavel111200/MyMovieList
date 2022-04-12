@@ -19,5 +19,7 @@ namespace MyMovieList.Core.Contracts
         Task<IdentityUser> GetUserById(string id);
 
         Task<string> GetUserId(string username);
+
+        Task<bool> Suggestion(UserSuggestionViewModel model);
     }
 }

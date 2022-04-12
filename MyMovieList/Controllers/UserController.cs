@@ -21,6 +21,28 @@ namespace MyMovieList.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult Suggestion()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Suggestion(UserSuggestionViewModel model)
+        {
+            bool isSaved = false;
+            if (ModelState.IsValid)
+            {
+                isSaved = await userService.Suggestion(model);
+            }
+
+            if (isSaved)
+            {
+                return RedirectToAction("Index","Home");
+            }
+            return View(model);
+        }
+
         //[HttpGet]
         //public async Task<IActionResult> ChangeName()
         //{
