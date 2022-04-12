@@ -109,5 +109,18 @@ namespace MyMovieList.Areas.Admin.Controllers
 
             return Ok();
         }
+
+        public async Task<IActionResult> Suggestion()
+        {
+            var model = await service.GetSuggestions();
+
+            return View(model);
+        }
+        public async Task<IActionResult> Delete(string id)
+        {
+            await service.DeleteSuggestion(id);
+
+            return RedirectToAction("Index", "Home");
+        }
     }
 }

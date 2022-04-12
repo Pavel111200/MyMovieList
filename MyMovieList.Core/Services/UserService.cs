@@ -4,11 +4,6 @@ using MyMovieList.Core.Contracts;
 using MyMovieList.Core.Models;
 using MyMovieList.Infrastructure.Data;
 using MyMovieList.Infrastructure.Data.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MyMovieList.Core.Services
 {
@@ -93,6 +88,31 @@ namespace MyMovieList.Core.Services
             }
 
             return isSaved;
+        }
+
+        public async Task<IEnumerable<UserSuggestionViewModel>> GetSuggestions()
+        {
+            return await repo.All<UserSuggestion>()
+                .Select(us => new UserSuggestionViewModel
+                {
+                    Title = us.Title,
+                    Type = us.Type,
+                    Id = us.Id
+                })
+                .ToListAsync();
+        }
+
+        public async Task DeleteSuggestion(string suggestionId)
+        {           
+            try
+            {
+                Guid id = new Guid(suggestionId);
+                await repo.DeleteAsync<UserSuggestion>(id);
+                await repo.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+            }
         }
     }
 }

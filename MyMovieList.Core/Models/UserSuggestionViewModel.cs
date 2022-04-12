@@ -9,6 +9,8 @@ namespace MyMovieList.Core.Models
 {
     public class UserSuggestionViewModel
     {
+        public Guid Id { get; set; }
+
         [Required]
         [StringLength(210)]
         public string Title { get; set; }

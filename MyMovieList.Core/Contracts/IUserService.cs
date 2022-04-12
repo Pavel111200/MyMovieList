@@ -21,5 +21,9 @@ namespace MyMovieList.Core.Contracts
         Task<string> GetUserId(string username);
 
         Task<bool> Suggestion(UserSuggestionViewModel model);
+
+        Task<IEnumerable<UserSuggestionViewModel>> GetSuggestions();
+
+        Task DeleteSuggestion(string suggestionId);
     }
 }

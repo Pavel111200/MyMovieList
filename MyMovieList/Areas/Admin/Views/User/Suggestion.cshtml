@@ -1,0 +1,40 @@
+﻿@using MyMovieList.Core.Models
+@model IList<UserSuggestionViewModel>
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">User suggestions</h3>
+    </div>
+
+    <div class="card-body">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Title</th>
+                    <th>Button</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                     <tr>
+                    <td>@item.Type</td>
+                    <td>@item.Title</td>                
+                    <td><a asp-action="Delete" asp-controller="User" asp-area="Admin" asp-route-id="@item.Id" style="background-color:red;" class="btn btn-danger">Detele</a></td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @*<div class="card-footer clearfix">
+        <ul class="pagination pagination-sm m-0 float-right">
+            <li class="page-item"><a class="page-link" href="#">«</a></li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">»</a></li>
+        </ul>
+    </div>*@
+</div>
