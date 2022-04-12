@@ -1,0 +1,36 @@
+﻿@using MyMovieList.Core.Models
+@model MovieDetailsViewModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+<section id="details-page" class="details">
+    <div class="book-information">
+        <h3>@Model.Title</h3>
+        <p style="width:250px; height:250px;" class="img"><img src="~/img/@Model.Image"></p>
+        <div class="actions">
+            <form method="post">
+                <label asp-for=Rating></label>
+                <input asp-for="Rating" type="number" class="form-control" id="InputTitle" placeholder="Enter Rating">
+                <span asp-validation-for="Rating" class="text-danger"></span>
+                <button class="button" type="submit">Submit rating</button>
+            </form>
+            <div class="likes">
+                <span id="total-likes">⭐Rating: @Model.Rating</span>
+            </div>
+        </div>
+    </div>
+    <div class="book-description">
+        <h3>Description:</h3>
+        <p>@Model.Description</p>
+        <p>Director/s: @Model.Director</p>
+        <p>Writer/s: @Model.Writer</p>
+        <p>Genre/s: @Model.Genre</p>
+        <p>Release date: @Model.CreatedOn</p>
+        <p>Runtime: @Model.Runtime</p>
+    </div>
+</section>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

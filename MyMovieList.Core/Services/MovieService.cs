@@ -110,6 +110,7 @@ namespace MyMovieList.Core.Services
             foreach (var movie in allMovies)
             {
                 movie.Rating = await GetRating(movie.Id.ToString());
+                movie.Rating = Math.Round(movie.Rating, 1);
             }
 
             return allMovies;
@@ -177,9 +178,42 @@ namespace MyMovieList.Core.Services
             foreach (var movie in allMovies)
             {
                 movie.Rating = await GetRating(movie.Id.ToString());
+                movie.Rating = Math.Round(movie.Rating, 1);
             }
 
-            return allMovies.OrderBy(m=>m.Rating).Take(3).ToList();
+            return allMovies.OrderByDescending(m=>m.Rating).Take(3).ToList();
+        }
+
+        public async Task<bool> RateMovie(string userId, Guid movieId, double rating)
+        {
+            bool isSaved = false;
+            var movieRating = await repo.All<MovieRating>()
+                .FirstOrDefaultAsync(mr => mr.UserId == userId && mr.MovieId == movieId);
+
+            if (movieRating != null)
+            {
+                movieRating.Rating = rating;
+                await repo.SaveChangesAsync();
+                return true;
+            }
+
+            MovieRating newMovieRating = new MovieRating()
+            {
+                UserId = userId,
+                MovieId = movieId,
+                Rating = rating,
+            };
+            try
+            {
+                await repo.AddAsync<MovieRating>(newMovieRating);
+                await repo.SaveChangesAsync();
+                isSaved = true;
+            }
+            catch (Exception)
+            {
+            }
+            
+            return isSaved;
         }
 
         public async Task<bool> UpdateMovie(EditMovieViewModel model)
@@ -281,7 +315,7 @@ namespace MyMovieList.Core.Services
             {
                 sumOfRatings += rating;
             }
-
+            
             return sumOfRatings / allRatings.Count;
         }
     }
