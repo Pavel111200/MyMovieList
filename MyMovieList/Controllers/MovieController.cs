@@ -8,12 +8,12 @@ namespace MyMovieList.Controllers
     public class MovieController : Controller
     {
         private readonly IMovieService movieService;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly IUserService userService;
 
-        public MovieController(IMovieService movieService, UserManager<IdentityUser> userManager)
+        public MovieController(IMovieService movieService, IUserService userService)
         {
             this.movieService = movieService;
-            this.userManager = userManager;
+            this.userService = userService;
         }
         public async Task<IActionResult> AllMovies()
         {
@@ -35,8 +35,7 @@ namespace MyMovieList.Controllers
         {
             bool isSaved = false;
 
-            var user = await userManager.FindByNameAsync(User.Identity.Name);
-            string userId = await userManager.GetUserIdAsync(user);
+            string userId = await userService.GetUserId(User.Identity.Name);
 
             isSaved = await movieService.RateMovie(userId, model.Id, model.Rating);
 

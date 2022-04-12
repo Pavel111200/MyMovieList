@@ -126,6 +126,7 @@ namespace MyMovieList.Core.Services
         public async Task<MovieDetailsViewModel> GetMovieDetails(string id)
         {
             double rating = await GetRating(id);
+            rating = Math.Round(rating, 1);
 
             return await repo.All<Movie>()
                 .Where(m => id == m.Id.ToString())

@@ -36,6 +36,14 @@ namespace MyMovieList.Core.Services
             };
         }
 
+        public async Task<string> GetUserId(string username)
+        {
+            return await repo.All<IdentityUser>()
+                .Where(u => u.UserName == username)
+                .Select(u=>u.Id)
+                .FirstAsync();
+        }
+
         public async Task<IEnumerable<UserListViewModel>> GetUsers()
         {
             return await repo.All<IdentityUser>()

@@ -17,5 +17,7 @@ namespace MyMovieList.Core.Contracts
         Task<bool> UpdateUser(UserEditViewModel model);
 
         Task<IdentityUser> GetUserById(string id);
+
+        Task<string> GetUserId(string username);
     }
 }
