@@ -14,7 +14,7 @@
                 <li class="otherBooks">
                     <h3>@movie.Title</h3>
                     <p class="img"><img src="~/img/@movie.Image"></p>
-                    <p>⭐Rating : @movie.Rating/10</p>
+                    <p>⭐Rating: @movie.Rating/10</p>
                     <a asp-controller="Movie" asp-action="Details" asp-route-id="@movie.Id" class="button">Details</a>
                 </li>
             }
@@ -24,6 +24,6 @@
     else
     {
         <p>There are no movies yet. Would you like to suggest one to be added?</p>
-        <a class="button" href="/movie/suggestion"></a>
+        <a class="button" href="/user/suggestion">Click here</a>
     }
 </section>

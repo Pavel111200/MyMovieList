@@ -5,7 +5,7 @@ using MyMovieList.Core.Models;
 
 namespace MyMovieList.Controllers
 {
-    public class MovieController : Controller
+    public class MovieController : BaseController
     {
         private readonly IMovieService movieService;
         private readonly IUserService userService;

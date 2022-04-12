@@ -24,8 +24,4 @@
     <ProjectReference Include="..\MyMovieList.Core\MyMovieList.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\User\" />
-  </ItemGroup>
-
 </Project>

@@ -1,0 +1,31 @@
+﻿@using MyMovieList.Core.Models
+@model IList<AllTVShowsViewModel>
+@{
+    ViewData["Title"] = "All TV shows";
+}
+
+<section id="dashboard-page" class="dashboard">
+    <h1>All TV shows</h1>
+    @if (Model != null)
+    {
+        <ul class="other-books-list">
+            @foreach (var show in Model)
+            {
+                <li class="otherBooks">
+                    <h3>@show.Title</h3>
+                    <p class="img"><img src="~/img/@show.Image"></p>
+                    <p>⭐Rating: @show.Rating/10</p>
+                    <p>Season: @show.Season</p>
+                    <a asp-controller="TVShow" asp-action="Details" asp-route-id="@show.Id" class="button">Details</a>
+                </li>
+            }
+        </ul>
+
+    }
+    else
+    {
+        <p>There are no TV shows yet. Would you like to suggest one to be added?</p>
+        <a class="button" href="/user/suggestion">Click here</a>
+    }
+</section>
+

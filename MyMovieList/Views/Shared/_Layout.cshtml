@@ -28,8 +28,11 @@
                         <a class="button" href="/tvshow/allshows">All TV Shows</a>
                         <a class="button" href="/movie/likedmovies">Liked Movies</a>
                         <a class="button" href="/tvshow/likedshows">Liked TV shows</a>
-                        <a class="button" href="/user/suggestion">Suggestion</a>
-                        <a class="button" href="/user/changename">Change Username</a>
+                        @if (User.IsInRole("User"))
+                        {
+                            <a class="button" href="/user/suggestion">Suggestion</a>
+                        }
+                        @*<a class="button" href="/user/changename">Change Username</a>*@
                     </div>
                 </section>
             </nav>
