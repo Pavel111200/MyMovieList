@@ -105,6 +105,29 @@ namespace MyMovieList.Core.Services
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<LikedShowsViewModel>> GetLikedShows(string userId)
+        {
+            var likedShows = await repo.All<TVShowRating>()
+                .Where(sr => sr.UserId == userId)
+                .Select(sr => new LikedShowsViewModel
+                {
+                    Id = sr.TVShow.Id,
+                    Image = sr.TVShow.Image,
+                    Title = sr.TVShow.Title,
+                    YourRating = sr.Rating,
+                    Season = sr.TVShow.Season,
+                })
+                .ToListAsync();
+
+            foreach (var show in likedShows)
+            {
+                show.OverallRating = await GetRating(show.Id.ToString());
+                show.OverallRating = Math.Round(show.OverallRating, 1);
+            }
+
+            return likedShows;
+        }
+
         public async Task<TVShowDetailsViewModel> GetTVShowDetails(string id)
         {
             double rating = await GetRating(id);

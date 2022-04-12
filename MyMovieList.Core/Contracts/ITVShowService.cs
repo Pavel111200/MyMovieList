@@ -22,5 +22,7 @@ namespace MyMovieList.Core.Contracts
         Task<EditTVShowViewModel> GetTVShowForEdit(string id);
 
         Task<bool> RateShow(string userId, Guid showId, double rating);
+
+        Task<IEnumerable<LikedShowsViewModel>> GetLikedShows(string userId);
     }
 }

@@ -1,0 +1,32 @@
+﻿@using MyMovieList.Core.Models
+@model IList<LikedShowsViewModel>
+@{
+    ViewData["Title"] = "Liked shows";
+}
+
+<section id="dashboard-page" class="dashboard">
+    <h1>Shows you have rated</h1>
+    @if (Model != null)
+    {
+        <ul class="other-books-list">
+            @foreach (var show in Model)
+            {
+                <li class="otherBooks">
+                    <h3>@show.Title</h3>
+                    <p class="img"><img src="~/img/@show.Image"></p>
+                    <p>⭐Rating : @show.OverallRating/10    ⭐Your rating: @show.YourRating</p>
+                    <p>Season: @show.Season</p>
+                    <a asp-controller="TVShow" asp-action="Details" asp-route-id="@show.Id" class="button">Details</a>
+                </li>
+            }
+        </ul>
+
+    }
+    else
+    {
+        <p>You haven't rated any movies. Would you like to rate one?</p>
+        <a class="button" href="/movie/allmovies">Click here</a>
+    }
+</section>
+
+
