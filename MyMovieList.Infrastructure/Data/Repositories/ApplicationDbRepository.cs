@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace MyMovieList.Infrastructure.Data.Repositories
 {
-    public class ApplicatioDbRepository : Repository, IApplicationDbRepository
+    public class ApplicationDbRepository : Repository, IApplicationDbRepository
     {
-        public ApplicatioDbRepository(ApplicationDbContext context)
+        public ApplicationDbRepository(ApplicationDbContext context)
         {
             this.Context = context;
         }

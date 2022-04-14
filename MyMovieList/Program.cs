@@ -24,7 +24,7 @@ builder.Services.AddAuthentication().AddFacebook(options =>
 });
 
 builder.Services.AddControllersWithViews();
-builder.Services.AddScoped<IApplicationDbRepository,ApplicatioDbRepository>();
+builder.Services.AddScoped<IApplicationDbRepository,ApplicationDbRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IMovieService, MovieService>();
 builder.Services.AddScoped<ITVShowService, TVShowService>();
