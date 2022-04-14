@@ -32,18 +32,22 @@
             <div class="form-group">
                 <label asp-for="Writer">Writer (separated by comma and space)</label>
                 <textarea asp-for="Writer" class="form-control" rows="3" placeholder="Enter writer name"></textarea>
+                <span asp-validation-for="Writer" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Description">Description</label>
                 <textarea asp-for="Description" class="form-control" rows="3" placeholder="Write description here"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Director">Director (separated by comma and space)</label>
                 <textarea asp-for="Director" class="form-control" rows="3" placeholder="Enter director name"></textarea>
+                <span asp-validation-for="Director" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Genre">Genre (separated by comma and space)</label>
                 <textarea asp-for="Genre" class="form-control" rows="3" placeholder="Enter genre"></textarea>
+                <span asp-validation-for="Genre" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Image" for="exampleInputFile">Image</label>
@@ -51,6 +55,7 @@
                     <div class="custom-file">
                         <input asp-for="Image" type="file" class="custom-file-input" id="exampleInputFile">
                         <label asp-for="Image" class="custom-file-label" for="exampleInputFile">Choose a file</label>
+                        <span asp-validation-for="Image" class="text-danger"></span>
                     </div>
                 </div>
             </div>
