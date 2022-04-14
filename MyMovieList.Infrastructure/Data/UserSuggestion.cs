@@ -17,7 +17,7 @@ namespace MyMovieList.Infrastructure.Data
         public string Title { get; set; }
 
         [Required]
-        [StringLength(6)]
+        [StringLength(10)]
         public string Type { get; set; }
     }
 }
