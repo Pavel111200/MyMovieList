@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MyMovieList.Core.Contracts;
 using MyMovieList.Models;
 using System.Diagnostics;
@@ -16,6 +17,7 @@ namespace MyMovieList.Controllers
             this.movieService = movieService;
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var model = await movieService.GetTopThree();

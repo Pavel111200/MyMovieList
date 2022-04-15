@@ -15,9 +15,19 @@
         <header id="site-header">
             <nav class="navbar">
                 <section class="navbar-dashboard">
-                    <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post">
                             <button type="submit" class="button">Log Out</button>
                         </form>
+                    }
+                    else
+                    {
+                        <div id="user">
+                        <a class="button" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                        <a class="button" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                        </div>
+                    }
                     <div id="user">                        
                         <span>Welcome, @User.Identity.Name</span>
                         @if (User.IsInRole("Administrator"))
