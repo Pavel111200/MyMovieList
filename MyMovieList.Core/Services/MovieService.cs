@@ -147,44 +147,60 @@ namespace MyMovieList.Core.Services
 
         public async Task<MovieDetailsViewModel> GetMovieDetails(string id)
         {
+            var movie = await repo.All<Movie>()
+                .Include(m => m.Genre)
+                .Include(m => m.Writer)
+                .Include(m => m.Director)
+                .FirstOrDefaultAsync(m => m.Id.ToString() == id);
+
+            if(movie == null)
+            {
+                throw new ArgumentException("The given id doesn't exist.");
+            }
+
             double rating = await GetRating(id);
             rating = Math.Round(rating, 1);
 
-            return await repo.All<Movie>()
-                .Where(m => id == m.Id.ToString())
-                .Select(m => new MovieDetailsViewModel()
-                {
-                    Id = m.Id,
-                    CreatedOn = m.CreatedOn,
-                    Description = m.Description,
-                    Director = string.Join(", ", m.Director.Select(d => $"{d.Firstname} {d.Lastname}")),
-                    Genre = string.Join(", ", m.Genre.Select(g => g.Name)),
-                    Image = m.Image,
-                    Runtime = m.Runtime,
-                    Title = m.Title,
-                    Writer = string.Join(", ", m.Writer.Select(w => $"{w.Firstname} {w.Lastname}")),
-                    Rating = rating
-                })
-                .FirstAsync();
+            return new MovieDetailsViewModel
+            {
+                Id = movie.Id,
+                CreatedOn = movie.CreatedOn,
+                Description = movie.Description,
+                Director = string.Join(", ", movie.Director.Select(d => $"{d.Firstname} {d.Lastname}")),
+                Genre = string.Join(", ", movie.Genre.Select(g => g.Name)),
+                Image = movie.Image,
+                Runtime = movie.Runtime,
+                Title = movie.Title,
+                Writer = string.Join(", ", movie.Writer.Select(w => $"{w.Firstname} {w.Lastname}")),
+                Rating = rating
+            };
         }
 
         public async Task<EditMovieViewModel> GetMovieForEdit(string id)
         {
-            return await repo.All<Movie>()
-                .Where(m => m.Id.ToString() == id)
-                .Select(m => new EditMovieViewModel()
-                {
-                    Id = m.Id,
-                    CreatedOn = m.CreatedOn,
-                    Description = m.Description,
-                    Director = string.Join(", ", m.Director.Select(d => $"{d.Firstname} {d.Lastname}")),
-                    Genre = string.Join(", ", m.Genre.Select(g => g.Name)),
-                    Image = m.Image,
-                    Runtime = m.Runtime,
-                    Title = m.Title,
-                    Writer = string.Join(", ", m.Writer.Select(w => $"{w.Firstname} {w.Lastname}")),
-                })
-                .FirstAsync();
+            var movie = await repo.All<Movie>()
+                .Include(m=>m.Genre)
+                .Include(m=>m.Writer)
+                .Include(m=>m.Director)
+                .FirstOrDefaultAsync(m => m.Id.ToString() == id);
+
+            if(movie == null)
+            {
+                throw new ArgumentException("The given id doesn't exist.");
+            }
+
+            return new EditMovieViewModel()
+            {
+                Id = movie.Id,
+                CreatedOn = movie.CreatedOn,
+                Description = movie.Description,
+                Director = string.Join(", ", movie.Director.Select(d => $"{d.Firstname} {d.Lastname}")),
+                Genre = string.Join(", ", movie.Genre.Select(g => g.Name)),
+                Image = movie.Image,
+                Runtime = movie.Runtime,
+                Title = movie.Title,
+                Writer = string.Join(", ", movie.Writer.Select(w => $"{w.Firstname} {w.Lastname}")),
+            };           
         }
 
         public async Task<IEnumerable<AllMoviesViewModel>> GetTopThree()
