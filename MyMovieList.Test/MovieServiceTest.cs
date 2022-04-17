@@ -116,6 +116,14 @@ namespace MyMovieList.Test
                 expected.OverallRating == actual.OverallRating &&
                 expected.YourRating == actual.YourRating);
         }
+        [Test]
+        public async Task GetMovieDetailsThrowsIfIdIsInvalid()
+        {
+            var movieService = serviceProvider.GetService<IMovieService>();
+            string invalidMovieId = "ab9470b4-1e07-4699-858c-8cb74f86fd9a";
+
+            Assert.CatchAsync<ArgumentException>(async () => await movieService.GetMovieDetails(invalidMovieId));
+        }
 
         //[Test]
         //public async Task GetMovieDetailsReturnsCorrectObject()
@@ -134,7 +142,7 @@ namespace MyMovieList.Test
         //        CreatedOn = DateTime.Now,
         //        Runtime = TimeSpan.FromHours(2),
         //        Image = "Harrypoter.png",
-        //        Rating = 1.0,
+        //        Rating = 10.0,
         //    };
 
         //    var actual = await movieService.GetMovieDetails(movieId);
@@ -150,7 +158,14 @@ namespace MyMovieList.Test
         //        expected.Description == actual.Description &&
         //        expected.Rating == actual.Rating);
         //}
+        [Test]
+        public async Task GetMovieForEditThrowsIfIdIsInvalid()
+        {
+            var movieService = serviceProvider.GetService<IMovieService>();
+            string invalidMovieId = "ab9470b4-1e07-4699-858c-8cb74f86fd9a";
 
+            Assert.CatchAsync<ArgumentException>(async () => await movieService.GetMovieForEdit(invalidMovieId));
+        }
         //[Test]
         //public async Task GetMovieForEditReturnsCorrectObject()
         //{
