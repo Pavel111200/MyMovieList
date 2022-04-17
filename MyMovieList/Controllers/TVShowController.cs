@@ -24,9 +24,17 @@ namespace MyMovieList.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(string id)
         {
-            var movie = await showService.GetTVShowDetails(id);
+            TVShowDetailsViewModel show = new TVShowDetailsViewModel();
+            try
+            {
+                show = await showService.GetTVShowDetails(id);
+            }
+            catch (ArgumentException)
+            {
+                return NotFound();
+            }
 
-            return View(movie);
+            return View(show);
         }
 
         [HttpPost]

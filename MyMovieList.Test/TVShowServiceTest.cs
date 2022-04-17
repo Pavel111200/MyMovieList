@@ -110,6 +110,23 @@ namespace MyMovieList.Test
                 expected.YourRating == actual.YourRating &&
                 expected.OverallRating == actual.OverallRating);
         }
+        [Test]
+        public async Task GetTVShowDetailsThrowsIfIdIsInvalid()
+        {
+            var showService = serviceProvider.GetService<ITVShowService>();
+            string invalidShowId = "ba9470b4-1e07-4699-858c-8cb74f86fd9a";
+
+            Assert.CatchAsync<ArgumentException>(async () => await showService.GetTVShowDetails(invalidShowId));
+        }
+
+        [Test]
+        public async Task GetTVShowForEditThrowsIfIdIsInvalid()
+        {
+            var showService = serviceProvider.GetService<ITVShowService>();
+            string invalidShowId = "ba9470b4-1e07-4699-858c-8cb74f86fd9a";
+
+            Assert.CatchAsync<ArgumentException>(async () => await showService.GetTVShowForEdit(invalidShowId));
+        }
 
         //[Test]
         //public async Task GetTVShowForEditReturnsCorrectTVShow()
