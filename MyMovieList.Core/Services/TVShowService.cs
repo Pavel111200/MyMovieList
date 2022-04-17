@@ -130,41 +130,56 @@ namespace MyMovieList.Core.Services
 
         public async Task<TVShowDetailsViewModel> GetTVShowDetails(string id)
         {
-            double rating = await GetRating(id);
+            var show = await repo.All<TVShow>()
+                .Include(s => s.Genre)
+                .Include(s => s.Writer)
+                .FirstOrDefaultAsync(m => m.Id.ToString() == id);
 
-            return await repo.All<TVShow>()
-                .Where(s => id == s.Id.ToString())
-                .Select(s => new TVShowDetailsViewModel()
-                {
-                    Id = s.Id,
-                    Description = s.Description,
-                    Genre = string.Join(", ", s.Genre.Select(g => g.Name)),
-                    Image = s.Image,
-                    Title = s.Title,
-                    Writer = string.Join(", ", s.Writer.Select(w => $"{w.Firstname} {w.Lastname}")),
-                    Rating = rating,
-                    NumberOfEpisodes = s.NumberOfEpisodes,
-                    Season = s.Season
-                })
-                .FirstAsync();
+            if (show == null)
+            {
+                throw new ArgumentException("The given id doesn't exist.");
+            }
+
+            double rating = await GetRating(id);
+            rating = Math.Round(rating, 1);
+
+            return new TVShowDetailsViewModel()
+            {
+                Id = show.Id,
+                Description = show.Description,
+                Genre = string.Join(", ", show.Genre.Select(g => g.Name)),
+                Image = show.Image,
+                Title = show.Title,
+                Writer = string.Join(", ", show.Writer.Select(w => $"{w.Firstname} {w.Lastname}")),
+                Rating = rating,
+                NumberOfEpisodes = show.NumberOfEpisodes,
+                Season = show.Season
+            };
         }
 
         public async Task<EditTVShowViewModel> GetTVShowForEdit(string id)
         {
-            return await repo.All<TVShow>()
-                .Where(s => s.Id.ToString() == id)
-                .Select(s => new EditTVShowViewModel()
-                {
-                    Id = s.Id,
-                    Description = s.Description,
-                    Genre = string.Join(", ", s.Genre.Select(g => g.Name)),
-                    Image = s.Image,
-                    Title = s.Title,
-                    Writer = string.Join(", ", s.Writer.Select(w => $"{w.Firstname} {w.Lastname}")),
-                    Season= s.Season,
-                    NumberOfEpisodes = s.NumberOfEpisodes,
-                })
-                .FirstAsync();
+            var show = await repo.All<TVShow>()
+                .Include(s=> s.Genre)
+                .Include(s=>s.Writer)
+                .FirstOrDefaultAsync(m => m.Id.ToString() == id);
+
+            if (show == null)
+            {
+                throw new ArgumentException("The given id doesn't exist.");
+            }
+
+            return new EditTVShowViewModel()
+            {
+                Id = show.Id,
+                Description = show.Description,
+                Genre = string.Join(", ", show.Genre.Select(g => g.Name)),
+                Image = show.Image,
+                Title = show.Title,
+                Writer = string.Join(", ", show.Writer.Select(w => $"{w.Firstname} {w.Lastname}")),
+                Season = show.Season,
+                NumberOfEpisodes = show.NumberOfEpisodes,
+            };
         }
 
         public async Task<bool> RateShow(string userId, Guid showId, double rating)

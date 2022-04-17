@@ -44,7 +44,15 @@ namespace MyMovieList.Areas.Admin.Controllers
 
         public async Task<IActionResult> Details(string id)
         {
-            var show = await showService.GetTVShowDetails(id);
+            TVShowDetailsViewModel show = new TVShowDetailsViewModel();
+            try
+            {
+                show = await showService.GetTVShowDetails(id);
+            }
+            catch (ArgumentException)
+            {
+                return NotFound();
+            }
 
             return View(show);
         }
@@ -52,9 +60,17 @@ namespace MyMovieList.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(string id)
         {
-            var model = await showService.GetTVShowForEdit(id);
+            EditTVShowViewModel show = new EditTVShowViewModel();
+            try
+            {
+                show = await showService.GetTVShowForEdit(id);
+            }
+            catch (ArgumentException)
+            {
+                return NotFound();
+            }
 
-            return View(model);
+            return View(show);
         }
 
         [HttpPost]
